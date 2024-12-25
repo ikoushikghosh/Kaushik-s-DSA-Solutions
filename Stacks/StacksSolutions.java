@@ -30,9 +30,13 @@ public class StacksSolutions {
         infixToPostfix("(10+3)*2-(7-6)*(4+8)");
 
         getNearestSmallerElementsInGivenArray(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
-        getNearestSmallerElementIndicesInGivenArray(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
-        getNearestSmallerElementDistancesInGivenArray(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
+        getNearestSmallerElementIndicesInLeft(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
+        getNearestSmallerElementIndicesInRight(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
+        getNearestSmallerElementDistancesInLeft(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
+        getNearestSmallerElementDistancesInRight(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
         getNearestLargerElementsInRightForGivenArray(new int[] {4, 5, 2, 1, 10, 18, 3, 2});
+
+        getLargestRectangleAreaHistogram(new int[] {2, 4, 3, 5, 2, 3, 4});
     }
 
     public static void removeDuplicateConsecutive(String s) {
@@ -121,7 +125,7 @@ public class StacksSolutions {
         }
     }
 
-    public static void getNearestSmallerElementsInGivenArray(int[] array) {
+    public static int[] getNearestSmallerElementsInGivenArray(int[] array) {
         Stack<Integer> stack = new Stack<>();
         int[] result = new int[array.length];
 
@@ -139,10 +143,12 @@ public class StacksSolutions {
 
         System.out.printf("The nearest smaller elements array is: %s%n", Arrays.toString(result));
 
+        return result;
+
     } // TC: O(n) & SC: O(n)
 
 
-    public static void getNearestSmallerElementIndicesInGivenArray(int[] array) {
+    public static int[] getNearestSmallerElementIndicesInLeft(int[] array) {
         Stack<Integer> stack = new Stack<>();
         int[] result = new int[array.length];
 
@@ -159,10 +165,36 @@ public class StacksSolutions {
             stack.push(i);
         }
 
-        System.out.printf("The nearest smaller element indices array is: %s%n", Arrays.toString(result));
-    }
+        System.out.printf("The nearest smaller element indices in left of array is: %s%n", Arrays.toString(result));
 
-    public static void getNearestSmallerElementDistancesInGivenArray(int[] array) {
+        return result;
+
+    } // TC: O(n) & SC: O(n)
+
+    public static int[] getNearestSmallerElementIndicesInRight(int[] array) {
+        Stack<Integer> stack = new Stack<>();
+        int[] result = new int[array.length];
+
+        for(int i = array.length - 1; i >= 0; i--) {
+            while(!stack.isEmpty() && array[stack.peek()] >= array[i]) {
+                stack.pop();
+            }
+
+            if(stack.isEmpty()) {
+                result[i] = -1;
+            } else {
+                result[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+
+        System.out.printf("The nearest smaller element indices in right of array is: %s%n", Arrays.toString(result));
+
+        return result;
+
+    } // TC: O(n) & SC: O(n)
+
+    public static int[] getNearestSmallerElementDistancesInLeft(int[] array) {
         Stack<Integer> stack = new Stack<>();
         int[] result = new int[array.length];
 
@@ -179,11 +211,37 @@ public class StacksSolutions {
             stack.push(i);
         }
 
-        System.out.printf("The nearest smaller element distances array is: %s%n", Arrays.toString(result));
-    }
+        System.out.printf("The nearest smaller elements distance in left of array is: %s%n", Arrays.toString(result));
+
+        return result;
+
+    } // TC: O(n) & SC: O(n)
+
+    public static int[] getNearestSmallerElementDistancesInRight(int[] array) {
+        Stack<Integer> stack = new Stack<>();
+        int[] result = new int[array.length];
+
+        for(int i = array.length - 1; i >= 0; i--) {
+            while(!stack.isEmpty() && array[stack.peek()] >= array[i]) {
+                stack.pop();
+            }
+
+            if(stack.isEmpty()) {
+                result[i] = -1;
+            } else {
+                result[i] = stack.peek() - i;
+            }
+            stack.push(i);
+        }
+
+        System.out.printf("The nearest smaller elements distance in right of array is: %s%n", Arrays.toString(result));
+
+        return result;
+
+    } // TC: O(n) & SC: O(n)
 
 
-    public static void getNearestLargerElementsInRightForGivenArray(int[] array) {
+    public static int[] getNearestLargerElementsInRightForGivenArray(int[] array) {
         Stack<Integer> stack = new Stack<>();
         int[] result = new int[array.length];
 
@@ -201,5 +259,31 @@ public class StacksSolutions {
         }
 
         System.out.printf("The nearest larger elements in right side array is: %s%n", Arrays.toString(result));
-    }
+
+        return result;
+    } // TC: O(n) & SC: O(n)
+
+     public static void getLargestRectangleAreaHistogram(int[] array) {
+         int[] smallerBarsIndicesInLeft = getNearestSmallerElementIndicesInLeft(array);
+         int[] smallerBarsIndicesInRight = getNearestSmallerElementIndicesInRight(array);
+
+         int maxArea = Integer.MIN_VALUE;
+         int currentArea;
+         for(int i = 0; i < array.length; i++) {
+             if(smallerBarsIndicesInLeft[i] == -1 && smallerBarsIndicesInRight[i] == -1) {
+                 currentArea = array[i] * array.length;
+             } else if (smallerBarsIndicesInRight[i] == -1) {
+                 currentArea = array[i] * (array.length - smallerBarsIndicesInLeft[i] - 1);
+             } else {
+                 currentArea = array[i] * (smallerBarsIndicesInRight[i] - smallerBarsIndicesInLeft[i] - 1);
+             }
+
+             if(currentArea > maxArea) {
+                 maxArea = currentArea;
+             }
+         }
+
+         System.out.printf("The largest area of histogram is: %d%n", maxArea);
+
+     }
 }
