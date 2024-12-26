@@ -57,7 +57,7 @@ public class CustomLinkedList {
     } // TC: O(1) & SC: O(1)
 
     public Node insertAtKthPosition(Node head, int data, int k) {
-        if(head == null || k > size) return head;
+        if(k > size) return head;
 
         if(k == 0) {
             head = insertAtHead(head, data);
@@ -94,15 +94,18 @@ public class CustomLinkedList {
 
     public Node deleteNodeAtTail(Node head) {
         if(head == null) return null;
+        if(head.getNext() == null) {
+            head = head.getNext();
+            tail = head;
+        } else {
+            Node current = head;
+            while (current.getNext().getNext() != null) {
+                current = current.getNext();
+            }
+            current.setNext(null);
 
-        Node current = head;
-
-        while(current.getNext().getNext() != null) {
-            current = current.getNext();
+            tail = current;
         }
-
-        current.setNext(null);
-        tail = current;
         size--;
         return head;
     }// TC: O(n) & SC: O(1)
@@ -194,7 +197,7 @@ public class CustomLinkedList {
         head.setNext(reverseKGroup(current, k));
 
         return newHead;
-    }
+    }// TC: O(n) & SC: O(n)
 
     public void printLinkedList(Node head) {
         System.out.printf("The linked list of size = %d is: ", size);
