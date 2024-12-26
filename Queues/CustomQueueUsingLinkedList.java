@@ -29,7 +29,7 @@ public class CustomQueueUsingLinkedList {
             tail.setNext(new Node(data));
             tail = tail.getNext();
         }
-        size++;
+        this.size++;
     }
 
     public int dequeue() {
@@ -39,7 +39,7 @@ public class CustomQueueUsingLinkedList {
         } else {
             int value = head.getData();
             head = head.getNext();
-            size--;
+            this.size--;
             return value;
         }
     }
@@ -54,7 +54,7 @@ public class CustomQueueUsingLinkedList {
     }
 
     public int getSize() {
-        return size;
+        return this.size;
     }
 
     public void printQueue() {
