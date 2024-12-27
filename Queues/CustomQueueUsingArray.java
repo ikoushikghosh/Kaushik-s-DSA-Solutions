@@ -4,8 +4,24 @@ import java.util.Arrays;
 
 /**
  * A custom implementation of a queue using an array.
- * This implementation supports basic queue operations: enqueue, dequeue and peek,
+ * This implementation supports basic queue operations: enqueue, dequeue, and peek,
  * with a fixed capacity defined at the time of instantiation.
+ * The queue follows the First-In-First-Out (FIFO) principle.
+ *
+ * The following operations are supported:
+ *
+ * - {@link #enqueue(int)}: Adds an element to the back of the queue.
+ *   If the queue is full, it will not add the element and print an error message.
+ *
+ * - {@link #dequeue()}: Removes an element from the front of the queue.
+ *   If the queue is empty, it will return -1 and print an error message.
+ *
+ * - {@link #peek()}: Returns the element at the front of the queue without removing it.
+ *   If the queue is empty, it will return -1 and print an error message.
+ *
+ * - {@link #printQueue()}: Prints the current state of the queue, including its size and elements.
+ *
+ * The queue uses a circular array for storage, allowing efficient use of the allocated space.
  *
  * @author Koushik
  */
